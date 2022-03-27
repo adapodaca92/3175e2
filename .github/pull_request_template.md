@@ -13,5 +13,3 @@ Please leave some notes explaining your thought process and your approach to sol
 My thought process first began with making sure that I was able to access all information in the data such as messages, conversationId, etc. When noticing that the messages array was logging as undefined inside of the addMessageToConversation function, I realized the postMessage function was not async and in that function we call the saveMessage function that is async. When fixing that I also noticed that the conversations still would not update immediately so I created a variable to copy the conversations state inside the addMessagesToConversation and addNewConvo functions to be able to manipulate the data to push the new message immediately. To have the messages appear in the correct order, I reversed the array of messages inside of the useEffect when we fetch the conversations.
 
 ## Further comments (optional)
-
-There is a test that fails in Cypress that is looking for a Logout button at the create account snapshot. All tests that I was supposed to fix pass.

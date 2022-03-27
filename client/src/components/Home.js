@@ -3,7 +3,6 @@ import axios from 'axios';
 import { useHistory } from 'react-router-dom';
 import { Grid, CssBaseline, Button } from '@material-ui/core';
 import { makeStyles } from '@material-ui/core/styles';
-
 import { SidebarContainer } from '../components/Sidebar';
 import { ActiveChat } from '../components/ActiveChat';
 import { SocketContext } from '../context/socket';
@@ -78,7 +77,7 @@ const Home = ({ user, logout }) => {
   const addNewConvo = useCallback((recipientId, message) => {
     setConversations((prev) =>
       prev.map((convo) => {
-        const convoCopy = { ...convo };
+        const convoCopy = { ...convo, messages: [...convo.messages] };
         if (convoCopy.otherUser.id === recipientId) {
           convoCopy.messages.push(message);
           convoCopy.latestMessageText = message.text;
@@ -102,7 +101,7 @@ const Home = ({ user, logout }) => {
     } else {
       setConversations((prev) =>
         prev.map((convo) => {
-          const convoCopy = { ...convo };
+          const convoCopy = { ...convo, messages: [...convo.messages] };
           if (convoCopy.id === message.conversationId) {
             convoCopy.messages.push(message);
             convoCopy.latestMessageText = message.text;
