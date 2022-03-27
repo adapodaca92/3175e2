@@ -109,7 +109,3 @@ const Signup = ({ user, register }) => {
 };
 
 export default Signup;
-
-// const MyButton = styled(Button)({
-//   color: "red",
-// });
