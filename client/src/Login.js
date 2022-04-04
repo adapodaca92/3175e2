@@ -53,8 +53,8 @@ const loginStyles = makeStyles((theme) => ({
 
 const Login = ({ user, login, props }) => {
   const history = useHistory();
-  const classes1 = loginStyles();
-  const classes = useStyles();
+  const loginClasses = loginStyles();
+  const defaultClasses = useStyles();
 
   const handleLogin = async (event) => {
     event.preventDefault();
@@ -71,16 +71,16 @@ const Login = ({ user, login, props }) => {
   }, [user, history]);
 
   return (
-    <div className={classes.root}>
+    <div className={defaultClasses.root}>
       <SidebarImage />
       <Grid container justifyContent="center">
         <Box width="100%">
           <Grid
             container
             item
-            className={`${classes1.header} ${classes.header}`}
+            className={`${loginClasses.header} ${defaultClasses.header}`}
           >
-            <Typography className={classes1.dontHaveAccount}>
+            <Typography className={loginClasses.dontHaveAccount}>
               Don't have an account?
             </Typography>
             <Link
@@ -89,7 +89,7 @@ const Login = ({ user, login, props }) => {
               style={{ textDecoration: 'none' }}
             >
               <Button
-                className={classes1.registerButton}
+                className={loginClasses.registerButton}
                 variant="contained"
                 size="large"
               >
@@ -99,7 +99,7 @@ const Login = ({ user, login, props }) => {
           </Grid>
           <form
             onSubmit={handleLogin}
-            className={`${classes1.formContainer} ${classes.formContainer}`}
+            className={`${loginClasses.formContainer} ${defaultClasses.formContainer}`}
           >
             <Grid
               container
@@ -108,16 +108,16 @@ const Login = ({ user, login, props }) => {
               alignItems="center"
               style={{ width: '100%' }}
             >
-              <Grid container className={classes.formGrid}>
-                <Typography className={classes.formText}>
+              <Grid container className={defaultClasses.formGrid}>
+                <Typography className={defaultClasses.formText}>
                   Welcome Back!
                 </Typography>
               </Grid>
-              <Grid container className={classes.formGrid}>
+              <Grid container className={defaultClasses.formGrid}>
                 <FormControl
                   margin="normal"
                   required
-                  className={classes.formControl}
+                  className={defaultClasses.formControl}
                 >
                   <TextField
                     aria-label="username"
@@ -127,11 +127,11 @@ const Login = ({ user, login, props }) => {
                   />
                 </FormControl>
               </Grid>
-              <Grid className={classes.formGrid}>
+              <Grid className={defaultClasses.formGrid}>
                 <FormControl
                   margin="normal"
                   required
-                  className={classes.formControl}
+                  className={defaultClasses.formControl}
                 >
                   <TextField
                     label="Password"
@@ -153,7 +153,7 @@ const Login = ({ user, login, props }) => {
                   type="submit"
                   variant="contained"
                   size="large"
-                  className={classes1.loginButton}
+                  className={loginClasses.loginButton}
                 >
                   Login
                 </Button>
