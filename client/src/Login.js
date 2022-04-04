@@ -1,7 +1,7 @@
 import React, { useEffect } from 'react';
+import SidebarImage from './components/SidebarImage';
 import { Link, useHistory } from 'react-router-dom';
-import image from './assets/bg-img.png';
-import bubble from './assets/bubble.svg';
+import { useStyles } from './styles/Styles';
 import {
   Grid,
   Box,
@@ -13,142 +13,47 @@ import {
   makeStyles,
 } from '@material-ui/core';
 
-const useStyles = makeStyles({
-  root: {
-    display: 'flex',
-    height: '100vh',
-
-    ['@media (max-width: 767px)']: {
-      flexDirection: 'column',
-      overflowX: 'hidden',
-    },
-  },
-  leftContainer: {
-    position: 'relative',
-    height: '100%',
-    width: '50%',
-
-    ['@media (max-width: 767px)']: {
-      width: '100%',
-      height: '300px',
-    },
-  },
-  backgroundImage: {
-    width: '100%',
-    height: '100%',
-
-    ['@media (max-width: 767px)']: {
-      objectFit: 'cover',
-      objectPosition: 'top',
-    },
-  },
-  backgroundImageColor: {
-    background: 'linear-gradient(180deg, #3A8DFF 0%, #86B9FF 100%)',
-    position: 'absolute',
-    zIndex: '1',
-    top: '0',
-    left: '0',
-    right: '0',
-    bottom: '0',
-    opacity: '0.85',
-  },
-  imageContent: {
-    display: 'flex',
-    justifyContent: 'center',
-    alignItems: 'center',
-    flexDirection: 'column',
-    position: 'absolute',
-    zIndex: '2',
-    top: '0',
-    left: '0',
-    right: '0',
-    bottom: '0',
-    marginBottom: '175px',
-
-    ['@media (max-width: 767px)']: {
-      margin: 'auto',
-    },
-  },
-  imageText: {
-    width: '75%',
-    display: 'flex',
-    justifyContent: 'center',
-    alignItems: 'center',
-    textAlign: 'center',
-    color: '#fff',
-    fontSize: '26px',
-    fontFamily: 'Open Sans',
-    marginTop: '50px',
-  },
-  bubbleImage: {
-    display: 'flex',
-    justifyContent: 'center',
-    alignItems: 'center',
-  },
+const loginStyles = makeStyles((theme) => ({
   header: {
-    display: 'flex',
-    justifyContent: 'flex-end',
-    alignItems: 'center',
-    padding: '40px 80px',
-    gap: '40px',
-
-    ['@media (max-width: 767px)']: {
-      justifyContent: 'center',
+    [theme.breakpoints.down('sm')]: {
       padding: '40px',
     },
   },
+  dontHaveAccount: {
+    color: '#B0B0B0',
+    fontSize: '14px',
+  },
   formContainer: {
-    height: '65%',
-    width: '100%',
-    display: 'flex',
-    flexDirection: 'column',
-    justifyContent: 'center',
-    alignItems: 'center',
-  },
-  formControl: {
-    width: '100%',
-    margin: '45px 0px',
-
-    ['@media (max-width: 767px)']: {
-      margin: '20px 0',
-    },
-  },
-  formText: {
-    width: '75%',
-    maxWidth: '500px',
-    top: '250px',
-    fontSize: '26px',
-    fontWeight: '600',
-    fontFamily: 'Open Sans',
-    marginRight: '200px',
-
-    ['@media (max-width: 767px)']: {
-      width: '100%',
-      maxWidth: 'unset',
-      marginRight: '0',
-    },
+    height: '45%',
   },
   registerButton: {
     backgroundColor: 'white',
     color: '#3A8DFF',
     textDecoration: 'none',
-    padding: '18px 36px',
+    width: '170px',
+    height: '54px',
+    borderRadius: '5px',
     boxShadow: '0px 2px 12px rgba(74, 106, 149, 0.2)',
   },
   loginButton: {
     backgroundColor: '#3A8DFF',
+    borderRadius: '3px',
     color: 'white',
-    padding: '16px 64px',
+    height: '56px',
+    width: '160px',
+    marginTop: '20px',
 
-    ['@media (max-width: 767px)']: {
-      marginTop: '-20px',
+    [theme.breakpoints.down('sm')]: {
+      color: 'red',
+      marginTop: '20px',
       marginBottom: '10px',
     },
   },
-});
+}));
 
-const Login = ({ user, login }) => {
+const Login = ({ user, login, props }) => {
   const history = useHistory();
+  const classes1 = loginStyles();
   const classes = useStyles();
 
   const handleLogin = async (event) => {
@@ -167,25 +72,15 @@ const Login = ({ user, login }) => {
 
   return (
     <div className={classes.root}>
-      <div className={classes.leftContainer}>
-        <Box
-          component="img"
-          src={image}
-          alt="background"
-          className={classes.backgroundImage}
-        />
-        <div className={classes.backgroundImageColor} />
-        <div className={classes.imageContent}>
-          <img src={bubble} height={65} width={67} alt="background" />
-          <div className={classes.imageText}>
-            Converse with anyone with any language
-          </div>
-        </div>
-      </div>
+      <SidebarImage />
       <Grid container justifyContent="center">
-        <Box width="100%" padding="20px">
-          <Grid container item className={classes.header}>
-            <Typography style={{ color: '#bababa' }}>
+        <Box width="100%">
+          <Grid
+            container
+            item
+            className={`${classes1.header} ${classes.header}`}
+          >
+            <Typography className={classes1.dontHaveAccount}>
               Don't have an account?
             </Typography>
             <Link
@@ -194,7 +89,7 @@ const Login = ({ user, login }) => {
               style={{ textDecoration: 'none' }}
             >
               <Button
-                className={classes.registerButton}
+                className={classes1.registerButton}
                 variant="contained"
                 size="large"
               >
@@ -202,7 +97,10 @@ const Login = ({ user, login }) => {
               </Button>
             </Link>
           </Grid>
-          <form onSubmit={handleLogin} className={classes.formContainer}>
+          <form
+            onSubmit={handleLogin}
+            className={`${classes1.formContainer} ${classes.formContainer}`}
+          >
             <Grid
               container
               direction="column"
@@ -210,12 +108,12 @@ const Login = ({ user, login }) => {
               alignItems="center"
               style={{ width: '100%' }}
             >
-              <Grid container style={{ width: '75%', maxWidth: '600px' }}>
+              <Grid container className={classes.formGrid}>
                 <Typography className={classes.formText}>
                   Welcome Back!
                 </Typography>
               </Grid>
-              <Grid container style={{ width: '75%', maxWidth: '600px' }}>
+              <Grid container className={classes.formGrid}>
                 <FormControl
                   margin="normal"
                   required
@@ -229,13 +127,7 @@ const Login = ({ user, login }) => {
                   />
                 </FormControl>
               </Grid>
-              <Grid
-                style={{
-                  width: '75%',
-                  maxWidth: '600px',
-                  marginBottom: '50px',
-                }}
-              >
+              <Grid className={classes.formGrid}>
                 <FormControl
                   margin="normal"
                   required
@@ -261,7 +153,7 @@ const Login = ({ user, login }) => {
                   type="submit"
                   variant="contained"
                   size="large"
-                  className={classes.loginButton}
+                  className={classes1.loginButton}
                 >
                   Login
                 </Button>
