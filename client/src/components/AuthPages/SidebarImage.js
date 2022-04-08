@@ -1,13 +1,13 @@
 import React from 'react';
-import image from '../assets/bg-img.png';
-import bubble from '../assets/bubble.svg';
-import { Box, makeStyles } from '@material-ui/core';
+import image from '../../assets/bg-img.png';
+import bubble from '../../assets/bubble.svg';
+import { Grid, Box, Typography, makeStyles } from '@material-ui/core';
 
 const useStyles = makeStyles((theme) => ({
   leftContainer: {
     position: 'relative',
     height: '100%',
-    width: '60%',
+    width: '75%',
 
     [theme.breakpoints.down('sm')]: {
       width: '100%',
@@ -71,21 +71,21 @@ const SidebarImage = () => {
   const classes = useStyles();
 
   return (
-    <div className={classes.leftContainer}>
+    <Grid className={classes.leftContainer}>
       <Box
         component="img"
         src={image}
-        alt="background"
+        alt="sidebar background"
         className={classes.backgroundImage}
       />
-      <div className={classes.backgroundImageColor} />
-      <div className={classes.imageContent}>
-        <img src={bubble} height={65} width={67} alt="background" />
-        <div className={classes.imageText}>
+      <Box className={classes.backgroundImageColor} />
+      <Grid className={classes.imageContent}>
+        <img src={bubble} height={65} width={67} alt="sidebar content" />
+        <Typography className={classes.imageText}>
           Converse with anyone with any language
-        </div>
-      </div>
-    </div>
+        </Typography>
+      </Grid>
+    </Grid>
   );
 };
 
