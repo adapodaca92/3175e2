@@ -1,5 +1,13 @@
 import React, { useState } from 'react';
-import { FormControl, FilledInput } from '@material-ui/core';
+import {
+  FormControl,
+  FilledInput,
+  InputAdornment,
+  Input as ImageInput,
+  InputLabel,
+  Typography,
+} from '@material-ui/core';
+import AddToPhotosIcon from '@material-ui/icons/AddToPhotos';
 import { makeStyles } from '@material-ui/core/styles';
 
 const useStyles = makeStyles(() => ({
@@ -13,14 +21,55 @@ const useStyles = makeStyles(() => ({
     borderRadius: 8,
     marginBottom: 20,
   },
+  addImagesIcon: {
+    color: '#D1D9E6',
+    height: '20px',
+    width: '18px',
+    margin: '25px 30px',
+    cursor: 'pointer',
+  },
+  imgInput: {
+    display: 'none',
+  },
+  numOfImagesChosen: {
+    color: '#9CADC8',
+    position: 'relative',
+    right: '110px',
+    width: '150px',
+  },
+  attachmentPreview: {
+    paddingLeft: '90px',
+  },
 }));
 
 const Input = ({ otherUser, conversationId, user, postMessage }) => {
   const classes = useStyles();
   const [text, setText] = useState('');
+  const [images, setImages] = useState([]);
 
   const handleChange = (event) => {
     setText(event.target.value);
+  };
+
+  const handleImageUpload = async (event) => {
+    event.preventDefault();
+    let files = event.currentTarget.files;
+    files = [...files];
+    const promise = files.map(async (file) => {
+      const formData = new FormData();
+      formData.append('file', file);
+      formData.append('upload_preset', 'my-uploads');
+      const imageData = await fetch(
+        'https://api.cloudinary.com/v1_1/duwtxqhir/image/upload',
+        {
+          method: 'POST',
+          body: formData,
+        }
+      ).then((res) => res.json());
+      return imageData.secure_url;
+    });
+    const imageUrl = await Promise.all(promise);
+    setImages(imageUrl);
   };
 
   const handleSubmit = async (event) => {
@@ -33,13 +82,15 @@ const Input = ({ otherUser, conversationId, user, postMessage }) => {
       recipientId: otherUser.id,
       conversationId,
       sender: conversationId ? null : user,
+      attachments: images,
     };
     await postMessage(reqBody);
     setText('');
+    setImages([]);
   };
 
   return (
-    <form className={classes.root} onSubmit={handleSubmit}>
+    <form method="post" className={classes.root} onSubmit={handleSubmit}>
       <FormControl fullWidth hiddenLabel>
         <FilledInput
           classes={{ root: classes.input }}
@@ -48,6 +99,32 @@ const Input = ({ otherUser, conversationId, user, postMessage }) => {
           value={text}
           name="text"
           onChange={handleChange}
+          endAdornment={
+            <InputAdornment position="end">
+              <ImageInput
+                type="file"
+                name="file"
+                id="imgupload"
+                inputProps={{ multiple: true }}
+                className={classes.imgInput}
+                onChange={(event) => handleImageUpload(event)}
+              />
+              <InputLabel
+                htmlFor="imgupload"
+                className={`${classes.addImagesIcon} ${classes.attachmentPreview}`}
+              >
+                {images.length > 0 ? (
+                  <Typography className={classes.numOfImagesChosen}>
+                    {`${images.length} ${
+                      images.length > 1 ? 'attached images' : ' attached image'
+                    }`}
+                  </Typography>
+                ) : (
+                  <AddToPhotosIcon />
+                )}
+              </InputLabel>
+            </InputAdornment>
+          }
         />
       </FormControl>
     </form>
