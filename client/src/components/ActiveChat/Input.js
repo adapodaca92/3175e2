@@ -61,7 +61,6 @@ const Input = ({ otherUser, conversationId, user, postMessage }) => {
         const formData = new FormData();
         formData.append('file', file);
         formData.append('upload_preset', 'my-uploads');
-        console.log(formData);
         const imageData = axios
           .post(
             'https://api.cloudinary.com/v1_1/duwtxqhir/image/upload',
@@ -69,8 +68,6 @@ const Input = ({ otherUser, conversationId, user, postMessage }) => {
             {
               transformRequest: [
                 (data, headers) => {
-                  console.log(headers);
-                  console.log(data);
                   delete headers['x-access-token'];
                   return data;
                 },
