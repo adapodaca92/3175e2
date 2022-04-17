@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import axios from 'axios';
 import {
   FormControl,
   FilledInput,
@@ -55,21 +56,33 @@ const Input = ({ otherUser, conversationId, user, postMessage }) => {
     event.preventDefault();
     let files = event.currentTarget.files;
     files = [...files];
-    const promise = files.map(async (file) => {
-      const formData = new FormData();
-      formData.append('file', file);
-      formData.append('upload_preset', 'my-uploads');
-      const imageData = await fetch(
-        'https://api.cloudinary.com/v1_1/duwtxqhir/image/upload',
-        {
-          method: 'POST',
-          body: formData,
-        }
-      ).then((res) => res.json());
-      return imageData.secure_url;
-    });
-    const imageUrl = await Promise.all(promise);
-    setImages(imageUrl);
+    const data = await Promise.all(
+      files.map((file) => {
+        const formData = new FormData();
+        formData.append('file', file);
+        formData.append('upload_preset', 'my-uploads');
+        console.log(formData);
+        const imageData = axios
+          .post(
+            'https://api.cloudinary.com/v1_1/duwtxqhir/image/upload',
+            formData,
+            {
+              transformRequest: [
+                (data, headers) => {
+                  console.log(headers);
+                  console.log(data);
+                  delete headers['x-access-token'];
+                  return data;
+                },
+              ],
+            }
+          )
+          .then((res) => res.data);
+        return imageData;
+      })
+    );
+    const imageUrls = data.map((image) => image.secure_url);
+    setImages(imageUrls);
   };
 
   const handleSubmit = async (event) => {
