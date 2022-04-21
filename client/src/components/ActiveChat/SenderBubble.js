@@ -52,9 +52,7 @@ const SenderBubble = ({ time, text, attachments }) => {
     <Box className={classes.root}>
       {attachments?.length > 1 && (
         <>
-          {text.length === 0 ? (
-            ''
-          ) : (
+          {text && (
             <Box className={classes.bubble}>
               <Typography className={classes.text}>{text}</Typography>
             </Box>
@@ -77,9 +75,9 @@ const SenderBubble = ({ time, text, attachments }) => {
 
       {attachments?.length > 1 && (
         <Box className={classes.multipleImagesBox}>
-          {attachments.map((attachment, index) => (
+          {attachments.map((attachment, id) => (
             <Box
-              key={index}
+              key={id}
               className={classes.multipleAttachments}
               component="img"
               src={attachment}
@@ -91,9 +89,7 @@ const SenderBubble = ({ time, text, attachments }) => {
 
       {attachments?.length <= 1 && (
         <>
-          {text.length === 0 ? (
-            ''
-          ) : (
+          {text && (
             <Box className={classes.bubble}>
               <Typography className={classes.text}>{text}</Typography>
             </Box>

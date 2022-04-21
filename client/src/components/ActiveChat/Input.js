@@ -57,25 +57,23 @@ const Input = ({ otherUser, conversationId, user, postMessage }) => {
     let files = event.currentTarget.files;
     files = [...files];
     const data = await Promise.all(
-      files.map((file) => {
+      files.map(async (file) => {
         const formData = new FormData();
         formData.append('file', file);
         formData.append('upload_preset', 'my-uploads');
-        const imageData = axios
-          .post(
-            'https://api.cloudinary.com/v1_1/duwtxqhir/image/upload',
-            formData,
-            {
-              transformRequest: [
-                (data, headers) => {
-                  delete headers['x-access-token'];
-                  return data;
-                },
-              ],
-            }
-          )
-          .then((res) => res.data);
-        return imageData;
+        const imageData = await axios.post(
+          'https://api.cloudinary.com/v1_1/duwtxqhir/image/upload',
+          formData,
+          {
+            transformRequest: [
+              (data, headers) => {
+                delete headers['x-access-token'];
+                return data;
+              },
+            ],
+          }
+        );
+        return imageData.data;
       })
     );
     const imageUrls = data.map((image) => image.secure_url);

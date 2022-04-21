@@ -72,9 +72,7 @@ const OtherUserBubble = ({ text, time, otherUser, attachments }) => {
       <Box className={classes.messageBox}>
         {attachments?.length > 1 && (
           <>
-            {text.length === 0 ? (
-              ''
-            ) : (
+            {text && (
               <Box className={classes.bubble}>
                 <Typography className={classes.text}>{text}</Typography>
               </Box>
@@ -97,9 +95,9 @@ const OtherUserBubble = ({ text, time, otherUser, attachments }) => {
 
         {attachments?.length > 1 && (
           <Box className={classes.multipleImagesBox}>
-            {attachments.map((attachment, index) => (
+            {attachments.map((attachment, id) => (
               <Box
-                key={index}
+                key={id}
                 className={classes.multipleAttachments}
                 component="img"
                 src={attachment}
@@ -111,9 +109,7 @@ const OtherUserBubble = ({ text, time, otherUser, attachments }) => {
 
         {attachments?.length <= 1 && (
           <>
-            {text.length === 0 ? (
-              ''
-            ) : (
+            {text && (
               <Box className={classes.bubble}>
                 <Typography className={classes.text}>{text}</Typography>
               </Box>
